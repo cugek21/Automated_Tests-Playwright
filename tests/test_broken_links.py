@@ -1,13 +1,13 @@
 """
-test_broken_links.py
-
 Automated test for detecting broken links on a web page.
+
 Fetches all links from the target URL, filters out blocked domains,
 and checks each link for a valid HTTP response.
 
 Author: Radek Jíša
 Email: radek.jisa@gmail.com
 """
+
 
 import logging
 
@@ -17,9 +17,10 @@ import requests
 from tests.utils import fetch_links
 from tests.conftest import URL, BLOCKED_DOMAINS
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 LINKS = fetch_links(URL, BLOCKED_DOMAINS)
+
 
 @pytest.mark.parametrize(('link'), LINKS)
 def test_broken_links(link: str):
