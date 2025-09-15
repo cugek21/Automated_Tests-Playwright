@@ -1,12 +1,12 @@
 """
-conftest.py
-
 Fixtures and configuration for Playwright-based automated tests.
+
 Provides browser, viewport, context, and utility fixtures for consistent test setup.
 
 Author: Radek Jíša
 Email: radek.jisa@gmail.com
 """
+
 
 import os
 import logging
@@ -25,7 +25,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 URL = 'https://engeto.cz/'
-
 TIMEOUT = 0.5  # seconds, used for response time tests
 
 BLOCKED_DOMAINS = [
@@ -45,6 +44,7 @@ VIEWPORTS = [
     {'width': 1024, 'height': 1366},   # large tablet
 ]
 
+
 @pytest.fixture(params=['chromium', 'firefox', 'webkit'])
 def browser_type(request: pytest.FixtureRequest) -> str:
     """
@@ -58,6 +58,7 @@ def browser_type(request: pytest.FixtureRequest) -> str:
     """
     return request.param
 
+
 @pytest.fixture(params=VIEWPORTS)
 def viewport(request: pytest.FixtureRequest) -> dict[str, int]:
     """
@@ -70,6 +71,7 @@ def viewport(request: pytest.FixtureRequest) -> dict[str, int]:
         Any: The selected viewport size for the test.
     """
     return request.param
+
 
 @pytest.fixture()
 def get_context_options(viewport: dict[str, int], browser_type: str) -> dict[str, object]:
@@ -97,6 +99,7 @@ def get_context_options(viewport: dict[str, int], browser_type: str) -> dict[str
         options['is_mobile'] = True
     return options
 
+
 @pytest.fixture()
 def page(browser_type: str, get_context_options: dict[str, object]) -> Page:
     """
@@ -122,6 +125,7 @@ def page(browser_type: str, get_context_options: dict[str, object]) -> Page:
         yield page
         logger.info('Closing browser')
         browser.close()
+
 
 @pytest.fixture()
 def refuse_cookies(page: Page) -> None:
