@@ -1,14 +1,14 @@
 """
-test_overlapped_mob.py
-
 Automated test for verifying that the last menu item in a mobile menu is visible
 and not overlapped by overlays.
+
 The test toggles mobile menus, interacts with submenus,
 and checks for visual obstructions from overlays such as cookie banners or chat widgets.
 
 Author: Radek Jíša
 Email: radek.jisa@gmail.com
 """
+
 
 import logging
 
@@ -17,7 +17,9 @@ from playwright.sync_api import Page
 
 from tests.conftest import URL
 
+
 logger = logging.getLogger(__name__)
+
 
 @pytest.mark.slow
 @pytest.mark.parametrize(

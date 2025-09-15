@@ -1,12 +1,12 @@
 """
-utils.py
-
 Utility functions for Playwright-based automated tests.
+
 Includes functions for extracting and normalizing hyperlinks from web pages.
 
 Author: Radek Jíša
 Email: radek.jisa@gmail.com
 """
+
 
 import logging
 import os
@@ -14,7 +14,9 @@ from urllib.parse import urljoin
 
 from playwright.sync_api import sync_playwright
 
+
 logger = logging.getLogger(__name__)
+
 
 def fetch_links(url: str, blocked_domains) -> list[str]:
     """

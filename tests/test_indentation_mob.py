@@ -1,13 +1,13 @@
 """
-test_indentation_mob.py
-
 Automated test for verifying that header elements on the mobile page are visible
 and properly indented from the left edge.
+
 Checks multiple header selectors for visibility and minimum indentation.
 
 Author: Radek Jíša
 Email: radek.jisa@gmail.com
 """
+
 
 import logging
 
@@ -16,7 +16,9 @@ from playwright.sync_api import Page
 
 from tests.conftest import URL
 
+
 logger = logging.getLogger(__name__)
+
 
 @pytest.mark.parametrize(
         ('header_sel'),
