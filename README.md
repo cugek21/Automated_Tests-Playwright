@@ -78,5 +78,5 @@ All tests and utilities use Python's built-in `logging` module for runtime diagn
   ```
 - The `HEADLESS` environment variable can be set to `false` to run browsers in headed mode.
 
-## License
-MIT License
+## Author
+Radek Jíša

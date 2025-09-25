@@ -1,12 +1,8 @@
 """
 Fixtures and configuration for Playwright-based automated tests.
-
-Provides browser, viewport, context, and utility fixtures for consistent test setup.
-
-Author: Radek Jíša
-Email: radek.jisa@gmail.com
+Provides browser, viewport, context, and utility fixtures
+for consistent test setup.
 """
-
 
 import os
 import logging
@@ -48,10 +44,11 @@ VIEWPORTS = [
 @pytest.fixture(params=['chromium', 'firefox', 'webkit'])
 def browser_type(request: pytest.FixtureRequest) -> str:
     """
-    Provides a browser type for testing: 'chromium', 'firefox', or 'webkit'.
+    Provides browser type for testing:
+    'chromium', 'firefox', or 'webkit'.
 
     Args:
-        request (pytest.FixtureRequest): Used to access the current browser type.
+        request (pytest.FixtureRequest): Used to access current browser.
 
     Returns:
         str: The selected browser type for the test.
@@ -65,7 +62,8 @@ def viewport(request: pytest.FixtureRequest) -> dict[str, int]:
     Provides a viewport size for testing from the VIEWPORTS list.
 
     Args:
-        request (pytest.FixtureRequest): Used to access the current viewport parameter.
+        request (pytest.FixtureRequest):
+            Used to access the current viewport parameter.
 
     Returns:
         Any: The selected viewport size for the test.
@@ -74,16 +72,18 @@ def viewport(request: pytest.FixtureRequest) -> dict[str, int]:
 
 
 @pytest.fixture()
-def get_context_options(viewport: dict[str, int], browser_type: str) -> dict[str, object]:
+def get_context_options(viewport: dict[str, int], browser_type: str
+) -> dict[str, object]:
     """
-    Generates browser context options for testing, customized by viewport and browser type.
+    Generates browser context options for testing, customized
+    by viewport and browser type.
 
     Args:
         viewport (dict[str, int]): The viewport size for the test.
-        browser_type (str): The browser type ('chromium', 'firefox', or 'webkit').
+        browser_type (str): 'chromium', 'firefox', or 'webkit'.
 
     Returns:
-        dict[str, object]: Options for configuring the browser context.
+        dict[str, object]: Options for configuring browser context.
     """
     options = {
         'viewport': viewport,
@@ -103,11 +103,13 @@ def get_context_options(viewport: dict[str, int], browser_type: str) -> dict[str
 @pytest.fixture()
 def page(browser_type: str, get_context_options: dict[str, object]) -> Page:
     """
-    Provides a Playwright page object configured with the specified browser and context options.
+    Provides a Playwright page object configured with the specified browser
+    and context options.
 
     Args:
-        browser_type (str): The browser type to launch ('chromium', 'firefox', or 'webkit').
-        get_context_options (dict): Options for configuring the browser context.
+        browser_type (str): 'chromium', 'firefox', or 'webkit'.
+        get_context_options (dict):
+            Options for configuring the browser context.
 
     Yields:
         playwright.sync_api.Page: The opened page for testing.
@@ -116,9 +118,13 @@ def page(browser_type: str, get_context_options: dict[str, object]) -> Page:
     headless = headless_env == 'true'
 
     with sync_playwright() as p:
-        logger.info('Launching browser: %s, headless=%s', browser_type, headless)
+        logger.info(
+            'Launching browser: %s, headless=%s', browser_type, headless
+        )
         browser = getattr(p, browser_type).launch(headless=headless)
-        logger.info('Creating browser context with options: %s', get_context_options)
+        logger.info(
+            'Creating browser context with options: %s', get_context_options
+        )
         context = browser.new_context(**get_context_options)
         logger.debug('Opening new page')
         page = context.new_page()
@@ -130,13 +136,13 @@ def page(browser_type: str, get_context_options: dict[str, object]) -> Page:
 @pytest.fixture()
 def refuse_cookies(page: Page) -> None:
     """
-    Provides a callable that clicks the cookie refusal button on the page if it is visible.
+    Provides a callable that clicks cookie refusal button if visible.
 
     Args:
         page (Page): The Playwright page object to interact with.
 
     Returns:
-        Callable[[], None]: A function that refuses cookies when called.
+        Callable[[], None]: Function that refuses cookies when called.
     """
     def _refuse():
         refuse_button = page.locator('#cookiescript_reject')

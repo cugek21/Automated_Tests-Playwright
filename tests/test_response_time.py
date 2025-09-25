@@ -1,15 +1,10 @@
 """
-Automated test for verifying that all fetched links from the main URL respond
-within an acceptable time limit.
+Automated test for verifying that all fetched links from the main URL
+respond within an acceptable time limit.
 
-Checks that each link responds in less than the configured TIMEOUT (see conftest.py)
-and does not raise request exceptions.
-The TIMEOUT value is defined in conftest.py and imported for consistency across tests.
-
-Author: Radek Jíša
-Email: radek.jisa@gmail.com
+Checks that each link responds in less than the configured TIMEOUT
+(see conftest.py) and does not raise request exceptions.
 """
-
 
 import logging
 
@@ -18,7 +13,6 @@ import requests
 
 from tests.utils import fetch_links
 from tests.conftest import URL, BLOCKED_DOMAINS, TIMEOUT
-
 
 logger = logging.getLogger(__name__)
 LINKS = fetch_links(URL, BLOCKED_DOMAINS)
@@ -50,7 +44,9 @@ def test_response_time(link: str):
         response = requests.get(link, headers=headers, timeout=10)
         elapsed = response.elapsed.total_seconds()
         if elapsed >= timeout:
-            logger.warning('Slow link: %s, Response Time: %.2f ms', link, elapsed*1000)
+            logger.warning(
+                'Slow link: %s, Response Time: %.2f ms', link, elapsed*1000
+            )
         assert elapsed < timeout, \
             f'Slow link: {link}, Response Time: {elapsed*1000} ms'
     except requests.RequestException as e:

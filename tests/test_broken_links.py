@@ -3,11 +3,7 @@ Automated test for detecting broken links on a web page.
 
 Fetches all links from the target URL, filters out blocked domains,
 and checks each link for a valid HTTP response.
-
-Author: Radek Jíša
-Email: radek.jisa@gmail.com
 """
-
 
 import logging
 
@@ -17,7 +13,6 @@ import requests
 from tests.utils import fetch_links
 from tests.conftest import URL, BLOCKED_DOMAINS
 
-
 logger = logging.getLogger(__name__)
 LINKS = fetch_links(URL, BLOCKED_DOMAINS)
 
@@ -25,7 +20,7 @@ LINKS = fetch_links(URL, BLOCKED_DOMAINS)
 @pytest.mark.parametrize(('link'), LINKS)
 def test_broken_links(link: str):
     """
-    Checks if a given link returns a valid (non-error) HTTP status code.
+    Checks if given link returns valid (non-error) HTTP status code.
 
     Args:
         link (str): The URL to be tested.
@@ -44,7 +39,9 @@ def test_broken_links(link: str):
     try:
         response = requests.get(link, headers=headers, timeout=10)
         if response.status_code >= 400:
-            logger.error('Broken link: %s, Status: %s', link, response.status_code)
+            logger.error(
+                'Broken link: %s, Status: %s', link, response.status_code
+            )
         assert response.status_code < 400, \
             f'Broken link: {link}, Status: {response.status_code}'
     except requests.RequestException as e:

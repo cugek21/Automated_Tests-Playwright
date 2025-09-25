@@ -1,14 +1,10 @@
 """
-Automated test for verifying that the last menu item in a mobile menu is visible
-and not overlapped by overlays.
+Automated test for verifying that the last menu item in a mobile menu
+is visible and not overlapped by overlays.
 
-The test toggles mobile menus, interacts with submenus,
-and checks for visual obstructions from overlays such as cookie banners or chat widgets.
-
-Author: Radek Jíša
-Email: radek.jisa@gmail.com
+Test toggles mobile menus, interacts with submenus, and checks for
+visual obstructions from overlays.
 """
-
 
 import logging
 
@@ -16,7 +12,6 @@ import pytest
 from playwright.sync_api import Page
 
 from tests.conftest import URL
-
 
 logger = logging.getLogger(__name__)
 
@@ -28,19 +23,27 @@ logger = logging.getLogger(__name__)
             (
                 '#main-header label.mobile-menu-toggle',
                 '#top-menu > li',
-                '#main-header > div > div > nav > div.menu-buttons-mobile-default'
+                '#main-header > div > div > nav > '
+                'div.menu-buttons-mobile-default'
             ),
             (
                 '#open-courses-menu',
                 '#courses-dropdown > li:nth-child(3) > ul > li',
-                '#main-header > div > div > nav > div.menu-buttons-mobile-courses'
+                '#main-header > div > div > nav > '
+                'div.menu-buttons-mobile-courses'
             )
         ]
         )
-def test_visibility(page: Page, refuse_cookies, menu_sel: str, last_item_sel: str, overlay_sel: str):
+def test_visibility(
+    page: Page,
+    refuse_cookies,
+    menu_sel: str,
+    last_item_sel: str,
+    overlay_sel: str
+):
     """
-    Verifies that the last menu item is visible and not overlapped by overlays
-    after toggling mobile menus.
+    Verifies that the last menu item is visible and not overlapped by
+    overlays after toggling mobile menus.
 
     Args:
         page (Page): The Playwright page object.
@@ -63,7 +66,9 @@ def test_visibility(page: Page, refuse_cookies, menu_sel: str, last_item_sel: st
 
     sub_menu_guide = page.locator('#top-menu > li.area-pruvodce > label')
     if sub_menu_guide.is_visible():
-        logger.debug('Clicking submenu: #top-menu > li.area-pruvodce > label')
+        logger.debug(
+            'Clicking submenu: #top-menu > li.area-pruvodce > label'
+        )
         sub_menu_guide.click()
 
     sub_menu_about = page.locator('#top-menu > li.area-onas > label')
@@ -77,7 +82,7 @@ def test_visibility(page: Page, refuse_cookies, menu_sel: str, last_item_sel: st
     assert last_item.is_visible(), 'Last item is not visible.'
 
     last_item_box = last_item.bounding_box()
-    logger.debug("Last item bounding box: %s", last_item_box)
+    logger.debug('Last item bounding box: %s', last_item_box)
     if last_item_box is None:
         logger.warning('Last item bounding box not found: %s', last_item_box)
     assert last_item_box is not None, 'Last item bounding box not found.'
@@ -92,9 +97,11 @@ def test_visibility(page: Page, refuse_cookies, menu_sel: str, last_item_sel: st
         if overlay.is_visible():
             overlay_box = overlay.bounding_box()
             if overlay_box is None:
-                logger.warning("Overlay bounding box not found: %s", overlay_box)
+                logger.warning(
+                    'Overlay bounding box not found: %s', overlay_box
+                )
             assert overlay_box is not None, 'Overlay bounding box not found.'
-            logger.info("Checking overlay bounding box: %s", overlay_box)
+            logger.info('Checking overlay bounding box: %s', overlay_box)
 
             def boxes_intersect(box1, box2):
                 return not (
@@ -104,5 +111,9 @@ def test_visibility(page: Page, refuse_cookies, menu_sel: str, last_item_sel: st
                     box2['y'] + box2['height'] < box1['y']
                 )
             if boxes_intersect(last_item_box, overlay_box):
-                logger.error("Last item is covered by overlay: %s", overlay_box)
-            assert not boxes_intersect(last_item_box, overlay_box), 'Last item is covered.'
+                logger.error(
+                    'Last item is covered by overlay: %s', overlay_box
+                )
+            assert not boxes_intersect(
+                last_item_box, overlay_box
+                ), 'Last item is covered.'

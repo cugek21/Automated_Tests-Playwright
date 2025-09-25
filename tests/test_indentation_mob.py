@@ -1,13 +1,8 @@
 """
-Automated test for verifying that header elements on the mobile page are visible
-and properly indented from the left edge.
-
-Checks multiple header selectors for visibility and minimum indentation.
-
-Author: Radek Jíša
-Email: radek.jisa@gmail.com
+Automated test for verifying that header elements on the mobile page
+are visible and properly indented from the left edge. Checks multiple
+header selectors for visibility and minimum indentation.
 """
-
 
 import logging
 
@@ -15,7 +10,6 @@ import pytest
 from playwright.sync_api import Page
 
 from tests.conftest import URL
-
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +25,8 @@ logger = logging.getLogger(__name__)
         )
 def test_indentation(page: Page, refuse_cookies, header_sel: str):
     """
-    Verifies that a given header element is visible and properly indented
-    from the left edge of the page.
+    Verifies that a given header element is visible and properly
+    indented from the left edge of the page.
 
     Args:
         page (Page): The Playwright page object.
@@ -40,8 +34,8 @@ def test_indentation(page: Page, refuse_cookies, header_sel: str):
         header_sel (str): CSS selector for the header element.
 
     Raises:
-        AssertionError: If the header is not visible, has no bounding box,
-        or is not indented by at least 16 pixels.
+        AssertionError: If the header is not visible, has no bounding
+        box, or is not indented by at least 16 pixels.
     """
     page.goto(URL)
     refuse_cookies()
@@ -58,7 +52,11 @@ def test_indentation(page: Page, refuse_cookies, header_sel: str):
     assert header_box is not None, 'Header bounding box not found.'
 
     if header_box['x'] < 16:
-        logger.error("Header '%s' x position: %s", header_sel, header_box['x'])
+        logger.error(
+            "Header '%s' x position: %s", header_sel, header_box['x']
+        )
     else:
-        logger.info("Header '%s' x position: %s", header_sel, header_box['x'])
+        logger.info(
+            "Header '%s' x position: %s", header_sel, header_box['x']
+        )
     assert header_box['x'] >= 16, 'Header is not indented.'

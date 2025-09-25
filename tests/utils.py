@@ -1,12 +1,7 @@
 """
-Utility functions for Playwright-based automated tests.
-
-Includes functions for extracting and normalizing hyperlinks from web pages.
-
-Author: Radek Jíša
-Email: radek.jisa@gmail.com
+Utility functions for Playwright-based automated tests for
+extracting and normalizing hyperlinks from webpage.
 """
-
 
 import logging
 import os
@@ -14,17 +9,17 @@ from urllib.parse import urljoin
 
 from playwright.sync_api import sync_playwright
 
-
 logger = logging.getLogger(__name__)
 
 
 def fetch_links(url: str, blocked_domains) -> list[str]:
     """
-    Extracts and normalizes all valid hyperlinks from the given webpage.
+    Extracts and normalizes all valid hyperlinks from given webpage.
 
     Args:
         url (str): The URL of the webpage to scan.
-        blocked_domains (list[str]): List of domain substrings to exclude from results.
+        blocked_domains (list[str]):
+            List of domain substrings to exclude from results.
 
     Returns:
         list[str]: A list of absolute URLs found on the page,
